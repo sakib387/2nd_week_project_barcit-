@@ -9,7 +9,7 @@ A Spring Boot application for managing books in a library, including features li
 3. **Search for a Book**: Search books by Title, Author, or Publication Year.
 4. **Display All Books**: Display all books in the inventory.
 5. **Exception Handling**: Handles errors like duplicate book entries or book not found.
-6. **Design Patterns**: Implements Singleton and Factory design patterns.
+6. **Design Patterns**: Implements Singleton  
 7. **Exit Application**: Safely terminates the Spring Boot application.
 
 ## Technologies Used
