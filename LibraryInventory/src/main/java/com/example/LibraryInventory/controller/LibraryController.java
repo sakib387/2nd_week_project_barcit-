@@ -12,7 +12,7 @@ public class LibraryController {
     @Autowired
     private LibraryService libraryService;
 
-    @GetMapping("/")
+    @GetMapping("/books")
     public List<Book> showAllBooks(){
         return libraryService.showAllBooks();
     }
@@ -27,7 +27,7 @@ public class LibraryController {
         return libraryService.updateBooksById(bookId,book);
     }
 
-    @PostMapping("{type}/add")
+    @PostMapping("{type}/book")
     public String addBook(@RequestBody Book book,@PathVariable String type){
         return libraryService.addBook(book,type);
     }
