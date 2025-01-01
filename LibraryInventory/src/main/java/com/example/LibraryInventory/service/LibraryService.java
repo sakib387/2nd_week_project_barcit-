@@ -3,6 +3,7 @@ package com.example.LibraryInventory.service;
 import com.example.LibraryInventory.error.AlreadeyExistException;
 import com.example.LibraryInventory.error.BookNotFoundException;
 import com.example.LibraryInventory.model.Book;
+import com.example.LibraryInventory.model.BookFactory;
 import com.example.LibraryInventory.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class LibraryService {
 
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    BookFactory bookFactory;
+
     public List<Book> showAllBooks() {
 
         return  bookRepository.getAllBooks();
@@ -46,7 +50,9 @@ public class LibraryService {
 
     }
 
-    public String addBook(Book book) {
+    public String addBook(Book book,String type) {
+
+        Book createdBook = bookFactory.createBook(type, book.getBookId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getPubYear());
 
         if(! bookRepository.addBook(book)){
             return "Book added successfully ):";

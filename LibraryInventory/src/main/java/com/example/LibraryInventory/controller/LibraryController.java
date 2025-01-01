@@ -28,9 +28,9 @@ public class LibraryController {
         return libraryService.updateBooksById(bookId,book);
     }
 
-    @PostMapping("/add")
-    public String addBook(@RequestBody Book book){
-        return libraryService.addBook(book);
+    @PostMapping("{type}/add")
+    public String addBook(@RequestBody Book book,@PathVariable String type){
+        return libraryService.addBook(book,type);
     }
 
     @DeleteMapping("/delete/{bookId}")
