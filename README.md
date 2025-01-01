@@ -36,8 +36,8 @@ A Spring Boot application for managing books in a library, including features li
 
 ## API Endpoints
 
-1. **POST /add**: Add a new book.
-2. **DELETE /{bookId}**: Remove a book by ID or Title.
+1. **POST /{type}\add**: Add a new book.
+2. **DELETE /delete/{bookId}**: Remove a book by ID or Title.
 3. **GET /{key}: Search books by Title, Author, or Publication Year.
 4. **GET / : Display all books.
 5. **POST /update/{bookId}**: Exit the application.
