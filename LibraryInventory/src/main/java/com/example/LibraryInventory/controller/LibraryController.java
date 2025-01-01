@@ -1,6 +1,6 @@
 package com.example.LibraryInventory.controller;
 import com.example.LibraryInventory.model.Book;
-import com.example.LibraryInventory.service.BookService;
+import com.example.LibraryInventory.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,30 +11,30 @@ import java.util.List;
 public class LibraryController {
 
     @Autowired
-    private BookService bookService;
+    private LibraryService libraryService;
 
     @GetMapping("/")
-    public List<Book> displayAllBooks(){
-        return bookService.getAllBooks();
+    public List<Book> showAllBooks(){
+        return libraryService.showAllBooks();
     }
 
     @GetMapping("/book/{key}")
-    public List<Book> findBooks(@PathVariable String key){
-        return bookService.findBooks(key);
+    public List<Book> finOnedBooks(@PathVariable String key){
+        return libraryService.finOnedBooks(key);
     }
 
     @PutMapping("/update/{bookId}")
-    public String updateBook(@PathVariable String bookId,@RequestBody Book book){
-        return bookService.updateBooks(bookId,book);
+    public String updateBooksById(@PathVariable String bookId,@RequestBody Book book){
+        return libraryService.updateBooksById(bookId,book);
     }
 
     @PostMapping("/add")
     public String addBook(@RequestBody Book book){
-        return bookService.addBook(book);
+        return libraryService.addBook(book);
     }
 
     @DeleteMapping("/delete/{bookId}")
-    public String deleteBook(@PathVariable String bookId){
-        return bookService.deleteBook(bookId);
+    public String deleteBookById(@PathVariable String bookId){
+        return libraryService.deleteBookById(bookId);
     }
 }
