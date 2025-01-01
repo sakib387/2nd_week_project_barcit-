@@ -1,6 +1,6 @@
 package com.example.LibraryInventory.model;
-
 import org.springframework.stereotype.Component;
+
 
 @Component
 public class BookFactory {

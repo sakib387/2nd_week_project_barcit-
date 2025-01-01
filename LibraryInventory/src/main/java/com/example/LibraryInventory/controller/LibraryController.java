@@ -19,7 +19,7 @@ public class LibraryController {
 
     @GetMapping("/book/{key}")
     public List<Book> finOnedBooks(@PathVariable String key){
-        return libraryService.finOnedBooks(key);
+        return libraryService.findOnedBooks(key);
     }
 
     @PutMapping("/update/{bookId}")
@@ -36,4 +36,5 @@ public class LibraryController {
     public String deleteBookById(@PathVariable String bookId){
         return libraryService.deleteBookById(bookId);
     }
+
 }

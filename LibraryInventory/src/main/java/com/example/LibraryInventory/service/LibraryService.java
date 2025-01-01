@@ -23,7 +23,7 @@ public class LibraryService {
 
     }
 
-    public List<Book> finOnedBooks(String key) {
+    public List<Book> findOnedBooks(String key) {
 
         return bookRepository.searchBooks(key);
 
@@ -35,7 +35,8 @@ public class LibraryService {
         System.out.println(update);
         if (update) {
             return "Book updated successfully!!";
-        } else {
+        }
+        else {
             throw new BookNotFoundException("Book not found with ID: " + bookId);
         }
 
