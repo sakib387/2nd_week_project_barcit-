@@ -52,14 +52,14 @@ public class BookRepository {
 
     }
 
-    public String deleteBook(String bookId) {
+    public boolean deleteBook(String bookId) {
 
         Book book=books.stream().filter(b->b.getBookId().equals(bookId)).findFirst().orElse(null);
           if(book==null)
-            return "Book not exist with this Id (: "+bookId;
+            return false;
         else {
             books.remove(book);
-            return "Book deleted successfully !!";
+            return true;
         }
 
     }

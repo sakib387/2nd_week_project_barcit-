@@ -1,5 +1,4 @@
 package com.example.LibraryInventory.service;
-
 import com.example.LibraryInventory.error.AlreadeyExistException;
 import com.example.LibraryInventory.error.BookNotFoundException;
 import com.example.LibraryInventory.model.Book;
@@ -46,14 +45,19 @@ public class LibraryService {
 
     public String deleteBookById(String bookId) {
 
-        return bookRepository.deleteBook(bookId);
+        boolean deleted= bookRepository.deleteBook(bookId);
+        if(deleted){
+            return "Book deleted successfully (:";
+        }
+        else{
+            throw new BookNotFoundException("Book not found with id :"+bookId);
+        }
 
     }
 
     public String addBook(Book book,String type) {
 
         Book createdBook = bookFactory.createBook(type, book.getBookId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getPubYear());
-
         if(! bookRepository.addBook(book)){
             return "Book added successfully ):";
         }
