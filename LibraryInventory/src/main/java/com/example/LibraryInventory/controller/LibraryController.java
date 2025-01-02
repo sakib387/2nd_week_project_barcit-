@@ -1,40 +1,46 @@
 package com.example.LibraryInventory.controller;
+
 import com.example.LibraryInventory.model.Book;
 import com.example.LibraryInventory.service.LibraryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
 @RestController
+@RequestMapping("/api/books")
 public class LibraryController {
 
+    private final LibraryService libraryService;
+
     @Autowired
-    private LibraryService libraryService;
-
-    @GetMapping("/books")
-    public List<Book> showAllBooks(){
-        return libraryService.showAllBooks();
+    public LibraryController(LibraryService libraryService) {
+        this.libraryService = libraryService;
     }
 
-    @GetMapping("/book/{key}")
-    public List<Book> finOnedBooks(@PathVariable String key){
-        return libraryService.findOnedBooks(key);
+    @GetMapping
+    public List<Book> getAllBooks() {
+        return libraryService.getAllBooks();
     }
 
-    @PutMapping("/update/{bookId}")
-    public String updateBooksById(@PathVariable String bookId,@RequestBody Book book){
-        return libraryService.updateBooksById(bookId,book);
+    @GetMapping("/search")
+    public List<Book> searchBooks(@RequestParam String keyword) {
+        return libraryService.searchBooks(keyword);
     }
 
-    @PostMapping("{type}/book")
-    public String addBook(@RequestBody Book book,@PathVariable String type){
-        return libraryService.addBook(book,type);
+    @PutMapping
+    public String updateBook(@RequestParam String bookId, @RequestBody Book book) {
+        return libraryService.updateBookById(bookId, book);
     }
 
-    @DeleteMapping("/delete/{bookId}")
-    public String deleteBookById(@PathVariable String bookId){
+    @PostMapping
+    public String addBook(@RequestBody Book book, @RequestParam String type) {
+        return libraryService.addBook(book, type);
+    }
+
+    @DeleteMapping
+    public String deleteBook(@RequestParam String bookId) {
         return libraryService.deleteBookById(bookId);
     }
-
 }

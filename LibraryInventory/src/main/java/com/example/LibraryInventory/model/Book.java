@@ -1,6 +1,6 @@
 package com.example.LibraryInventory.model;
-import org.springframework.stereotype.Component;
 
+import org.springframework.stereotype.Component;
 
 
 @Component
@@ -8,7 +8,7 @@ public class Book {
 
 
     private String bookId;
-    private  String title;
+    private String title;
     private String author;
     private String genre;
     private Integer pubYear;

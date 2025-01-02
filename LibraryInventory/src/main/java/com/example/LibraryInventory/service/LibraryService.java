@@ -12,59 +12,45 @@ import java.util.List;
 @Service
 public class LibraryService {
 
+    private final BookRepository bookRepository;
+    private final BookFactory bookFactory;
+
     @Autowired
-    BookRepository bookRepository;
-    @Autowired
-    BookFactory bookFactory;
-
-    public List<Book> showAllBooks() {
-
-        return  bookRepository.getAllBooks();
-
+    public LibraryService(BookRepository bookRepository, BookFactory bookFactory) {
+        this.bookRepository = bookRepository;
+        this.bookFactory = bookFactory;
     }
 
-    public List<Book> findOnedBooks(String key) {
-
-        return bookRepository.searchBooks(key);
-
+    public List<Book> getAllBooks() {
+        return bookRepository.getAllBooks();
     }
 
-    public String updateBooksById(String bookId, Book book) {
+    public List<Book> searchBooks(String keyword) {
+        return bookRepository.searchBooks(keyword);
+    }
 
-        boolean update= bookRepository.updateBooks(bookId,book);
-        System.out.println(update);
-        if (update) {
-            return "Book updated successfully!!";
-        }
-        else {
+    public String updateBookById(String bookId, Book book) {
+        if (bookRepository.updateBook(bookId, book)) {
+            return "Book updated successfully.";
+        } else {
             throw new BookNotFoundException("Book not found with ID: " + bookId);
         }
-
-
     }
-
 
     public String deleteBookById(String bookId) {
-
-        boolean deleted= bookRepository.deleteBook(bookId);
-        if(deleted){
-            return "Book deleted successfully (:";
+        if (bookRepository.deleteBook(bookId)) {
+            return "Book deleted successfully.";
+        } else {
+            throw new BookNotFoundException("Book not found with ID: " + bookId);
         }
-        else{
-            throw new BookNotFoundException("Book not found with id :"+bookId);
-        }
-
     }
 
-    public String addBook(Book book,String type) {
-
-        Book createdBook = bookFactory.createBook(type, book.getBookId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getPubYear());
-        if(! bookRepository.addBook(book)){
-            return "Book added successfully ):";
+    public String addBook(Book book, String type) {
+        Book newBook = bookFactory.createBook(type, book.getBookId(), book.getTitle(), book.getAuthor(), book.getGenre(), book.getPubYear());
+        if (!bookRepository.addBook(newBook)) {
+            return "Book added successfully.";
+        } else {
+            throw new AlreadeyExistException("Book already exists with ID: " + book.getBookId());
         }
-        else{
-            throw new AlreadeyExistException("Book already exist with this id "+book.getBookId());
-        }
-
     }
 }

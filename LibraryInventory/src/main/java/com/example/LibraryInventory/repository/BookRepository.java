@@ -1,74 +1,67 @@
 package com.example.LibraryInventory.repository;
+
 import com.example.LibraryInventory.model.Book;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-
 @Repository
 public class BookRepository {
 
-    private List<Book> books=new ArrayList<>();
+    private final List<Book> books = new ArrayList<>();
 
     public List<Book> getAllBooks() {
-
-        return  books;
+        return books;
     }
 
-    public List<Book> searchBooks(String key) {
-
-        List<Book>filtedBook=  books.stream().filter(book->book.getBookId().equals(key)||
-                book.getAuthor().equals(key)||book.getTitle().equals(key)
-                ||book.getPubYear().toString().equals(key)||book.getGenre().equals(key)).collect(Collectors.toList());
-
-        return filtedBook;
-
+    public List<Book> searchBooks(String keyword) {
+        return books.stream()
+                .filter(book -> book.getBookId().equalsIgnoreCase(keyword) ||
+                        book.getAuthor().equalsIgnoreCase(keyword) ||
+                        book.getTitle().equalsIgnoreCase(keyword) ||
+                        book.getPubYear().toString().equals(keyword) ||
+                        book.getGenre().equalsIgnoreCase(keyword))
+                .collect(Collectors.toList());
     }
 
-    public boolean updateBooks(String bookId,Book updatedBook) {
+    public boolean updateBook(String bookId, Book updatedBook) {
+        List<Book> matchedBooks = books.stream()
+                .filter(book -> book.getBookId().equals(bookId))
+                .collect(Collectors.toList());
 
-        List<Book>filteredBooks =  books.stream().filter(book->book.getBookId().equals(bookId) ).collect(Collectors.toList());
-        for (Book existingBook : filteredBooks) {
-            if (!existingBook.getAuthor().equals(updatedBook.getAuthor()) && updatedBook.getAuthor() != null) {
+        matchedBooks.forEach(existingBook -> {
+            if (updatedBook.getAuthor() != null && !updatedBook.getAuthor().isEmpty()) {
                 existingBook.setAuthor(updatedBook.getAuthor());
             }
-            if (!existingBook.getGenre().equals(updatedBook.getGenre()) && updatedBook.getGenre() != null) {
+            if (updatedBook.getGenre() != null && !updatedBook.getGenre().isEmpty()) {
                 existingBook.setGenre(updatedBook.getGenre());
             }
-            if (!existingBook.getTitle().equals(updatedBook.getTitle()) && updatedBook.getTitle() != null) {
+            if (updatedBook.getTitle() != null && !updatedBook.getTitle().isEmpty()) {
                 existingBook.setTitle(updatedBook.getTitle());
             }
-            if (!existingBook.getPubYear().equals(updatedBook.getPubYear()) && updatedBook.getPubYear() != null) {
+            if (updatedBook.getPubYear() != null) {
                 existingBook.setPubYear(updatedBook.getPubYear());
             }
-        }
-        return !filteredBooks .isEmpty();
+        });
+
+        return !matchedBooks.isEmpty();
     }
 
     public boolean addBook(Book newBook) {
+        boolean bookExists = books.stream()
+                .anyMatch(book -> book.getBookId().equals(newBook.getBookId()));
 
-        int count=(int) books.stream().filter(book->book.getBookId().equals(newBook.getBookId())).count();
-        if(count==0)
+        if (!bookExists) {
             books.add(newBook);
+        }
 
-        return count>0;
-
+        return bookExists;
     }
 
     public boolean deleteBook(String bookId) {
-
-       Book bookToDelete =books.stream().filter(book->book.getBookId().equals(bookId)).findFirst().orElse(null);
-
-       if(bookToDelete ==null){
-           return false;
-       }
-       else {
-         books.remove(bookToDelete );
-         return true;
-       }
-
+        return books.removeIf(book -> book.getBookId().equals(bookId));
     }
-
 }
