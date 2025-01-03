@@ -30,7 +30,7 @@ public class LibraryController {
     }
 
     @PutMapping
-    public String updateBook(@RequestParam String bookId, @RequestBody Book book) {
+    public String updateBook(@RequestParam Integer bookId, @RequestBody Book book) {
         return libraryService.updateBookById(bookId, book);
     }
 
@@ -40,7 +40,7 @@ public class LibraryController {
     }
 
     @DeleteMapping
-    public String deleteBook(@RequestParam String bookId) {
+    public String deleteBook(@RequestParam Integer bookId) {
         return libraryService.deleteBookById(bookId);
     }
 }

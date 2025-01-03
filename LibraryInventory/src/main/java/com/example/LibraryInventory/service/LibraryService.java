@@ -15,7 +15,7 @@ public class LibraryService {
     private final BookRepository bookRepository;
     private final BookFactory bookFactory;
 
-    @Autowired
+
     public LibraryService(BookRepository bookRepository, BookFactory bookFactory) {
         this.bookRepository = bookRepository;
         this.bookFactory = bookFactory;
@@ -29,7 +29,7 @@ public class LibraryService {
         return bookRepository.searchBooks(keyword);
     }
 
-    public String updateBookById(String bookId, Book book) {
+    public String updateBookById(Integer bookId, Book book) {
         if (bookRepository.updateBook(bookId, book)) {
             return "Book updated successfully.";
         } else {
@@ -37,7 +37,7 @@ public class LibraryService {
         }
     }
 
-    public String deleteBookById(String bookId) {
+    public String deleteBookById(Integer bookId) {
         if (bookRepository.deleteBook(bookId)) {
             return "Book deleted successfully.";
         } else {

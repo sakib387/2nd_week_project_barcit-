@@ -3,7 +3,7 @@ package com.example.LibraryInventory.model;
 
 public class Ebook extends Book {
 
-    public Ebook(String bookId, String title, String author, String genre, Integer pubYear) {
+    public Ebook(Integer bookId, String title, String author, String genre, Integer pubYear) {
         super(bookId, title, author, genre, pubYear);
     }
 

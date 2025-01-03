@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class Book {
 
 
-    private String bookId;
+    private Integer bookId;
     private String title;
     private String author;
     private String genre;
@@ -16,7 +16,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String bookId, String title, String author, String genre, Integer pubYear) {
+    public Book(Integer bookId, String title, String author, String genre, Integer pubYear) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
@@ -24,11 +24,11 @@ public class Book {
         this.pubYear = pubYear;
     }
 
-    public String getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(String bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 

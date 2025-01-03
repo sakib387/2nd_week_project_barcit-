@@ -1,11 +1,12 @@
 package com.example.LibraryInventory.model;
+
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class BookFactory {
 
-    public Book createBook(String type, String bookId, String title, String author, String genre, Integer pubYear) {
+    public Book createBook(String type, Integer bookId, String title, String author, String genre, Integer pubYear) {
         if ("ebook".equalsIgnoreCase(type)) {
             return new Ebook(bookId, title, author, genre, pubYear);
         } else if ("audiobook".equalsIgnoreCase(type)) {

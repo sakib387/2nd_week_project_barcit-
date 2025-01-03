@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 
@@ -19,7 +20,7 @@ public class BookRepository {
 
     public List<Book> searchBooks(String keyword) {
         return books.stream()
-                .filter(book -> book.getBookId().equalsIgnoreCase(keyword) ||
+                .filter(book -> book.getBookId().toString().equalsIgnoreCase(keyword) ||
                         book.getAuthor().equalsIgnoreCase(keyword) ||
                         book.getTitle().equalsIgnoreCase(keyword) ||
                         book.getPubYear().toString().equals(keyword) ||
@@ -27,28 +28,33 @@ public class BookRepository {
                 .collect(Collectors.toList());
     }
 
-    public boolean updateBook(String bookId, Book updatedBook) {
-        List<Book> matchedBooks = books.stream()
+    public boolean updateBook(Integer bookId, Book updatedBook) {
+        AtomicBoolean isUpdated = new AtomicBoolean(false);
+
+        books.stream()
                 .filter(book -> book.getBookId().equals(bookId))
-                .collect(Collectors.toList());
+                .forEach(existingBook -> {
+                    if (updatedBook.getAuthor() != null && !updatedBook.getAuthor().isEmpty()) {
+                        existingBook.setAuthor(updatedBook.getAuthor());
+                        isUpdated.set(true);
+                    }
+                    if (updatedBook.getGenre() != null && !updatedBook.getGenre().isEmpty()) {
+                        existingBook.setGenre(updatedBook.getGenre());
+                        isUpdated.set(true);
+                    }
+                    if (updatedBook.getTitle() != null && !updatedBook.getTitle().isEmpty()) {
+                        existingBook.setTitle(updatedBook.getTitle());
+                        isUpdated.set(true);
+                    }
+                    if (updatedBook.getPubYear() != null) {
+                        existingBook.setPubYear(updatedBook.getPubYear());
+                        isUpdated.set(true);
+                    }
+                });
 
-        matchedBooks.forEach(existingBook -> {
-            if (updatedBook.getAuthor() != null && !updatedBook.getAuthor().isEmpty()) {
-                existingBook.setAuthor(updatedBook.getAuthor());
-            }
-            if (updatedBook.getGenre() != null && !updatedBook.getGenre().isEmpty()) {
-                existingBook.setGenre(updatedBook.getGenre());
-            }
-            if (updatedBook.getTitle() != null && !updatedBook.getTitle().isEmpty()) {
-                existingBook.setTitle(updatedBook.getTitle());
-            }
-            if (updatedBook.getPubYear() != null) {
-                existingBook.setPubYear(updatedBook.getPubYear());
-            }
-        });
-
-        return !matchedBooks.isEmpty();
+        return isUpdated.get();
     }
+
 
     public boolean addBook(Book newBook) {
         boolean bookExists = books.stream()
@@ -61,7 +67,7 @@ public class BookRepository {
         return bookExists;
     }
 
-    public boolean deleteBook(String bookId) {
+    public boolean deleteBook(Integer bookId) {
         return books.removeIf(book -> book.getBookId().equals(bookId));
     }
 }
